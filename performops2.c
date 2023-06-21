@@ -11,16 +11,12 @@ void pcharnode(stack_t **head, unsigned int line_num)
 	if (*head == NULL)
 	{
 	fprintf(stderr, "L%d: can't pchar, stack empty\n", line_num);
-	fclose(shared.file);
-	free(shared.mcont);
 	freestack(*head);
 	exit(EXIT_FAILURE);
 	}
 	if ((*head)->n < 0 || (*head)->n > 127)
 	{
 	fprintf(stderr, "L%d: can't pchar, value out of range\n", line_num);
-	fclose(shared.file);
-	free(shared.mcont);
 	freestack(*head);
 	exit(EXIT_FAILURE);
 	}
@@ -46,8 +42,6 @@ void modnode(stack_t **head, unsigned int line_num)
 	if (len < 2)
 	{
 		fprintf(stderr, "L%d: can't mod, stack too short\n", line_num);
-		fclose(shared.file);
-		free(shared.mcont);
 		freestack(*head);
 		exit(EXIT_FAILURE);
 	}
@@ -55,8 +49,6 @@ void modnode(stack_t **head, unsigned int line_num)
 	if (current->n == 0)
 	{
 		fprintf(stderr, "L%d: division by zero\n", line_num);
-		fclose(shared.file);
-		free(shared.mcont);
 		freestack(*head);
 		exit(EXIT_FAILURE);
 	}

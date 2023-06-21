@@ -12,9 +12,6 @@ void addnode(stack_t **head, unsigned int line_num)
 	if (*head == NULL || (*head)->next == NULL)
 	{
 	fprintf(stderr, "L%d: can't add, stack too short\n", line_num);
-	fclose(shared.file);
-	free(shared.mcont);
-	freestack(*head);
 	exit(EXIT_FAILURE);
 	}
 
@@ -50,9 +47,6 @@ void subnode(stack_t **head, unsigned int line_num)
 	if (*head == NULL || (*head)->next == NULL)
 	{
 	fprintf(stderr, "L%u: can't sub, stack too short\n", line_num);
-	fclose(shared.file);
-	free(shared.mcont);
-	freestack(*head);
 	exit(EXIT_FAILURE);
 	}
 	temp = *head;
@@ -75,18 +69,12 @@ void divnode(stack_t **head, unsigned int line_num)
 	if (*head == NULL || (*head)->next == NULL)
 	{
 	fprintf(stderr, "L%u: can't div, stack too short\n", line_num);
-	fclose(shared.file);
-	free(shared.mcont);
-	freestack(*head);
 	exit(EXIT_FAILURE);
 	}
 
 	if ((*head)->n == 0)
 	{
 	fprintf(stderr, "L%u: division by zero\n", line_num);
-	fclose(shared.file);
-	free(shared.mcont);
-	freestack(*head);
 	exit(EXIT_FAILURE);
 	}
 
@@ -112,9 +100,6 @@ void mulnode(stack_t **head, unsigned int line_num)
 	if (*head == NULL || (*head)->next == NULL)
 	{
 	fprintf(stderr, "L%u: can't mul, stack too short\n", line_num);
-	fclose(shared.file);
-	free(shared.mcont);
-	freestack(*head);
 	exit(EXIT_FAILURE);
 	}
 

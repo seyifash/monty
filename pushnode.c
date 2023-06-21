@@ -7,28 +7,22 @@
  */
 void pushnode(stack_t **head, int value)
 {
-	stack_t *new_node;
+	stack_t *new_node, *curr;
 
+	curr = *head;
 	new_node = malloc(sizeof(stack_t));
 	if (new_node == NULL)
 	{
 	fprintf(stderr, "Error: malloc failed\n");
 	exit(EXIT_FAILURE);
 	}
+	if (curr)
+	curr->prev = new_node;
 	new_node->n = value;
-	new_node->prev = NULL;
-
-	if (*head == NULL)
-	{
-	new_node->next = NULL;
-	*head = new_node;
-	}
-	else
-	{
 	new_node->next = *head;
-	(*head)->prev = new_node;
+	new_node->prev = NULL;
 	*head = new_node;
-	}
+
 }
 /**
  * pushqueue - add node to the tail stack
@@ -76,9 +70,6 @@ void pintnode(stack_t **head, unsigned int line_num)
 	if (*head == NULL)
 	{
 	fprintf(stderr, "L%d: can't pint, stack empty\n", line_num);
-	fclose(shared.file);
-	free(shared.mcont);
-	freestack(*head);
 	exit(EXIT_FAILURE);
 	}
 
@@ -98,9 +89,6 @@ void popnode(stack_t **head, unsigned int line_num)
 	if (*head == NULL)
 	{
 	fprintf(stderr, "L%d: can't pop an empty stack\n", line_num);
-	fclose(shared.file);
-	free(shared.mcont);
-	freestack(*head);
 	exit(EXIT_FAILURE);
 	}
 
@@ -123,9 +111,6 @@ void swapnode(stack_t **head, unsigned int line_num)
 	if (*head == NULL || (*head)->next == NULL)
 	{
 	fprintf(stderr, "L%d: can't swap, stack too short\n", line_num);
-	fclose(shared.file);
-	free(shared.mcont);
-	freestack(*head);
 	exit(EXIT_FAILURE);
 	}
 	temp = *head;

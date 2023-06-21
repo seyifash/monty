@@ -49,8 +49,6 @@ typedef struct instruction_s
 typedef struct shared_v
 {
 	char *arg;
-	FILE *file;
-	char *mcont;
 	int  tflag;
 }  shared_vv;
 extern shared_vv shared;

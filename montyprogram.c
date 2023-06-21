@@ -1,6 +1,6 @@
 #include "monty.h"
 #include <stdio.h>
-shared_vv shared;
+shared_vv shared = {NULL, 0};
 /**
  * main - monty code inteprter that executes the code
  * @argc: number of arguments
@@ -22,7 +22,6 @@ int main(int argc, char *argv[])
 	exit(EXIT_FAILURE);
 	}
 	file = fopen(argv[1], "r");
-	shared.file = file;
 	if (!file)
 	{
 	fileError(argv[1]);
@@ -31,10 +30,10 @@ int main(int argc, char *argv[])
 	{
 	counter++;
 	lineread = getline(&filecontent, &n, file);
-	shared.mcont = filecontent;
+	if (lineread > 0)
 	handleops(filecontent, &stack, counter, file);
-	free(filecontent);
 	}
+	free(filecontent);
 	freestack(stack);
 	fclose(file);
 	return (0);

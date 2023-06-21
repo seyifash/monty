@@ -53,7 +53,7 @@ int handleops(char *content, stack_t **stack, unsigned int counter, FILE *file)
 	else
 	{
 	fprintf(stderr, "L%u: unknown instruction %s\n", counter, opt);
-	freestack(*stack);
+	free(*stack);
 	free(content);
 	fclose(file);
 	exit(EXIT_FAILURE);

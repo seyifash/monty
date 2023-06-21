@@ -21,14 +21,11 @@ void mpush(stack_t **head, unsigned int counter)
 	if (flag == 1)
 	{
 	fprintf(stderr, "L%d: usage: push integer\n", counter);
-	fclose(shared.file);
-	free(shared.mcont);
 	freestack(*head);
 	exit(EXIT_FAILURE); }}
 	else
-	{ fprintf(stderr, "L%d: usage: push integer\n", counter);
-		fclose(shared.file);
-		free(shared.mcont);
+	{
+		fprintf(stderr, "L%d: usage: push integer\n", counter);
 		freestack(*head);
 		exit(EXIT_FAILURE);
 	}
@@ -37,11 +34,12 @@ void mpush(stack_t **head, unsigned int counter)
 		pushnode(head, n);
 	else
 		pushqueue(head, n);
+
 }
 /**
- * fqueue - prints the top
- * @head: stack head
- * @counter: line_number
+ * mqueue - prints the top
+ * @head: unused
+ * @counter: unused
  * Return: no return
 */
 void mqueue(stack_t **head, unsigned int counter)
@@ -50,10 +48,11 @@ void mqueue(stack_t **head, unsigned int counter)
 	(void)counter;
 	shared.tflag = 1;
 }
+
 /**
- * fstack - prints the top
- * @head: stack head
- * @counter: line_number
+ * mstack - prints the top
+ * @head: unused
+ * @counter: unused
  * Return: no return
 */
 void mstack(stack_t **head, unsigned int counter)
@@ -62,23 +61,24 @@ void mstack(stack_t **head, unsigned int counter)
 	(void)counter;
 	shared.tflag = 0;
 }
+
 /**
  * pallnode - prints the stack
- * @head: stack head
- * @counter: no used
+ * @head: unused
+ * @counter: unsed
  * Return: no return
 */
 void pallnode(stack_t **head, unsigned int counter)
 {
-	stack_t *h;
+	stack_t *curr;
 	(void)counter;
 
-	h = *head;
-	if (h == NULL)
+	curr = *head;
+	if (curr == NULL)
 		return;
-	while (h)
+	while (curr)
 	{
 		printf("%d\n", h->n);
-		h = h->next;
+		curr = curr->next;
 	}
 }
