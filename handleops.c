@@ -1,48 +1,78 @@
 #include "monty.h"
-
 /**
- * handleops - checks the given opcode and returns its corresponding functions
- * @content: the content of the monty file
- * @stack: the head pointer of the stack
- * @counter: counts the number lines
- * @file: the name of the monty file
- * Return: no return
+ * is_opcode- checks and compares the given opcode
+ * @opcode: the opcode
+ *
+ * Return: returns a pointer to the corresponding function
  */
-int handleops(char *content, stack_t **stack, unsigned int counter, FILE *file)
+void (*is_opcode(char *opcode))(stack_t **, unsigned int)
 {
+	unsigned int i;
+
 	instruction_t theopt[] = {
-				{"push", mpush}, {"pall", mpall},
-				{"pint", pintnode},{"pop", popnode},
+				{"push", mpush}, {"pall", pallnode},
+				{"pint", pintnode}, {"pop", popnode},
 				{"swap", swapnode}, {"add", addnode},
 				{"nop", donop}, {"sub", subnode},
 				{"div", divnode}, {"mul", mulnode},
 				{"mod", modnode}, {"pchar", pcharnode},
 				{"pstr", pstrnode}, {"rotl", rotlnode},
-				{"rotr", rotrnode}, {"queue", pushqueue},
+				{"rotr", rotrnode}, {"queue", mqueue},
 				{"stack", mstack}, {NULL, NULL}
-				};
-	unsigned int i = 0;
-	char *op;
+			};
+
+	for (i = 0; theopt[i].opcode; i++)
+	if (strcmp(theopt[i].opcode, opcode) == 0)
+	return (theopt[i].f);
+
+	return (NULL);
+}
+/**
+ * handleops - checks the given opcode and returns its corresponding functions
+ * @content: the content of the monty file
+ * @stack: the head pointer of the stack
+ * @counter: counts the number lines
+ * @file: name of the monty file
+ * Return: exit success on success
+ */
+int handleops(char *content, stack_t **stack, unsigned int counter, FILE *file)
+{
+	void (*opcode_func)(stack_t **, unsigned int);
+	char *opt;
 
 	opt = strtok(content, " \n\t");
 	if (opt && opt[0] == '#')
-		return (0);
+	return (0);
 	shared.arg = strtok(NULL, " \n\t");
-	while (theopt[i].opcode && opt)
+	opcode_func = is_opcode(opt);
+	if (opcode_func)
 	{
-		if (strcmp(opt, theopt[i].opcode) == 0)
-		{
-		theopt[i].f(stack, counter);
-		return (0);
-		}
-		i++;
+	opcode_func(stack, counter);
+	return (0);
 	}
-	if (op && theopt[i].opcode == NULL)
+	else
 	{
-		fprintf(stderr, "L%d: unknown instruction %s\n", counter, opt);
-		fclose(file);
-		free(content);
-		free_st(*stack);
-		exit(EXIT_FAILURE); }
-	return (1);
+	fprintf(stderr, "L%u: unknown instruction %s\n", counter, opt);
+	freestack(*stack);
+	free(content);
+	fclose(file);
+	exit(EXIT_FAILURE);
+	}
+
+}
+/**
+* freestack - frees a doubly linked list
+* @head: head of the stack
+*/
+void freestack(stack_t *head)
+{
+	stack_t *current;
+
+	current = head;
+	while (head)
+	{
+		current = head->next;
+		free(head);
+		head = current;
+	}
 }

@@ -21,7 +21,7 @@ void pushnode(stack_t **head, int value)
 	if (*head == NULL)
 	{
 	new_node->next = NULL;
-	head = new_node;
+	*head = new_node;
 	}
 	else
 	{
@@ -76,9 +76,9 @@ void pintnode(stack_t **head, unsigned int line_num)
 	if (*head == NULL)
 	{
 	fprintf(stderr, "L%d: can't pint, stack empty\n", line_num);
-	fclose(shared.fname);
-	free(shareds.mcont);
-	free_stack(*head);
+	fclose(shared.file);
+	free(shared.mcont);
+	freestack(*head);
 	exit(EXIT_FAILURE);
 	}
 
@@ -97,18 +97,18 @@ void popnode(stack_t **head, unsigned int line_num)
 
 	if (*head == NULL)
 	{
-	fprintf(stderr, "L%d: can't pop an empty stack\n", line_number);
-	fclose(shared.fname);
+	fprintf(stderr, "L%d: can't pop an empty stack\n", line_num);
+	fclose(shared.file);
 	free(shared.mcont);
 	freestack(*head);
 	exit(EXIT_FAILURE);
 	}
 
 	temp = *head;
-	*head = (*head)->next;
+	*head = temp->next;
 	if (*head != NULL)
 	(*head)->prev = NULL;
-	free(temp)
+	free(temp);
 }
 /**
  * swapnode - swaps the top two elements of the stack.
@@ -117,17 +117,19 @@ void popnode(stack_t **head, unsigned int line_num)
  */
 void swapnode(stack_t **head, unsigned int line_num)
 {
-	int head;
+	stack_t *temp;
+	int swp;
 
 	if (*head == NULL || (*head)->next == NULL)
 	{
-	fprintf(stderr, "L%d: can't swap, stack too short\n", line_number);
+	fprintf(stderr, "L%d: can't swap, stack too short\n", line_num);
 	fclose(shared.file);
-	free(shared.cont);
-	free_stack(*head);
+	free(shared.mcont);
+	freestack(*head);
 	exit(EXIT_FAILURE);
 	}
-	temp = (*head)->n;
-	(*head)->n = (*head)->next->n;
-	(*head)->next->n = temp;
+	temp = *head;
+	swp = temp->n;
+	temp->n = temp->next->n;
+	temp->next->n = swp;
 }

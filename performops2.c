@@ -1,27 +1,27 @@
 #include "monty.h"
 /**
- * pcharnodes - prints the char at the top of the stack,
+ * pcharnode - prints the char at the top of the stack,
  * followed by a new line
  * @head: stack head
  * @line_num: line_number
  * Return: no return
 */
-void pcharnodes(stack_t **head, unsigned int line_num)
+void pcharnode(stack_t **head, unsigned int line_num)
 {
 	if (*head == NULL)
 	{
 	fprintf(stderr, "L%d: can't pchar, stack empty\n", line_num);
-	fclose(shared.fname);
+	fclose(shared.file);
 	free(shared.mcont);
-	free_stack(*head);
+	freestack(*head);
 	exit(EXIT_FAILURE);
 	}
 	if ((*head)->n < 0 || (*head)->n > 127)
 	{
 	fprintf(stderr, "L%d: can't pchar, value out of range\n", line_num);
-	fclose(shared.fname);
+	fclose(shared.file);
 	free(shared.mcont);
-	free_stack(*head);
+	freestack(*head);
 	exit(EXIT_FAILURE);
 	}
 	printf("%c\n", (*head)->n);
@@ -37,7 +37,6 @@ void modnode(stack_t **head, unsigned int line_num)
 {
 	stack_t *current;
 	int len = 0, modu;
-
 	current = *head;
 	while (current)
 	{
@@ -47,18 +46,18 @@ void modnode(stack_t **head, unsigned int line_num)
 	if (len < 2)
 	{
 		fprintf(stderr, "L%d: can't mod, stack too short\n", line_num);
-		fclose(shared.fname);
+		fclose(shared.file);
 		free(shared.mcont);
-		free_stack(*head);
+		freestack(*head);
 		exit(EXIT_FAILURE);
 	}
 	current = *head;
 	if (current->n == 0)
 	{
 		fprintf(stderr, "L%d: division by zero\n", line_num);
-		fclose(shared.fname);
+		fclose(shared.file);
 		free(shared.mcont);
-		free_stack(*head);
+		freestack(*head);
 		exit(EXIT_FAILURE);
 	}
 	modu = current->next->n % current->n;
@@ -98,22 +97,23 @@ void pstrnode(stack_t **head, unsigned int line_num)
  */
 void rotlnode(stack_t **head, unsigned int line_num)
 {
-	stack_t *last;
-	(void) line_num
+	stack_t *temp, *last;
+	(void)line_num;
 
 	if (*head == NULL || (*head)->next == NULL)
 	return;
 
-	last = *head;
+	temp = *head;
+	last = (*head)->next;
+	last->prev = NULL;
 
-	while (last->next != NULL)
-	last = last->next;
+	while (temp->next != NULL)
+	temp = temp->next;
 
-	last->next = *head;
-	(*head)->prev = last;
-	*head = (*head)->next;
-	(*head)->prev->next = NULL;
-	(*head)->prev = NULL;
+	temp->next = *head;
+	(*head)->next = NULL;
+	(*head)->prev = temp;
+	(*head) = last;
 }
 /**
   * rotrnode - rotates the stack to the bottom
@@ -123,8 +123,8 @@ void rotlnode(stack_t **head, unsigned int line_num)
  */
 void rotrnode(stack_t **head, unsigned int line_num)
 {
-	stack_t rot;
-	(void)line_num
+	stack_t *rot;
+	(void)line_num;
 
 	if (*head == NULL || (*head)->next == NULL)
 	return;
@@ -135,8 +135,8 @@ void rotrnode(stack_t **head, unsigned int line_num)
 	rot = rot->next;
 
 	rot->next = *head;
-	(*head)->prev = rot;
-	*head = rot;
 	rot->prev->next = NULL;
 	rot->prev = NULL;
+	(*head)->prev = rot;
+        *head = rot;
 }

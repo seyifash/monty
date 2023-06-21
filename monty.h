@@ -20,9 +20,9 @@
  */
 typedef struct stack_s
 {
-        int n;
-        struct stack_s *prev;
-        struct stack_s *next;
+	int n;
+	struct stack_s *prev;
+	struct stack_s *next;
 } stack_t;
 /**
  * struct instruction_s - opcode and its function
@@ -34,39 +34,46 @@ typedef struct stack_s
  */
 typedef struct instruction_s
 {
-        char *opcode;
-        void (*f)(stack_t **stack, unsigned int line_number);
+	char *opcode;
+	void (*f)(stack_t **stack, unsigned int line_number);
 } instruction_t;
 /**
  * struct shared_v - variables -args, file, line content
  * @arg: value
- * @file: pointer to monty file
- * @content: line content
- * @lifi: flag change stack <-> queue
+ * @fname: pointer to monty file
+ * @mcont: line content
+ * @tflag: flag change stack <-> queue
  * Description: carries values through the program
  */
 typedef struct shared_v
 {
 	char *arg;
-	FILE *fname;
+	FILE *file;
 	char *mcont;
 	int  tflag;
 }  shared_vv;
 extern shared_vv shared;
-int handleops(char *content, stack_t **stack, unsigned int counter, FILE *file);
+int handleops(char *content, stack_t **stack, unsigned int num, FILE *file);
 void swapnode(stack_t **head, unsigned int line_num);
 void popnode(stack_t **head, unsigned int line_num);
 void pintnode(stack_t **head, unsigned int line_num);
 void pushnode(stack_t **head, int value);
 void pushqueue(stack_t **head, int value);
+void (*is_opcode(char *opcode))(stack_t **, unsigned int);
 void rotrnode(stack_t **head, unsigned int line_num);
 void rotlnode(stack_t **head, unsigned int line_num);
 void pstrnode(stack_t **head, unsigned int line_num);
-void pcharnodes(stack_t **head, unsigned int line_num);
+void pcharnode(stack_t **head, unsigned int line_num);
 void modnode(stack_t **head, unsigned int line_num);
-void mulnode(stack_t **head, unsigned int line_num)
-void divnode(stack_t **head, unsigned int line_num)
-void subnode(stack_t **head, unsigned int line_num)
-void donop(stack_t **head, unsigned int line_num)
-void addnode(stacK_t **head, unsigned int line_num)
+void mulnode(stack_t **head, unsigned int line_num);
+void fileError(char *filename);
+void freestack(stack_t *head);
+void divnode(stack_t **head, unsigned int line_num);
+void subnode(stack_t **head, unsigned int line_num);
+void donop(stack_t **head, unsigned int line_num);
+void addnode(stack_t **head, unsigned int line_num);
+void mqueue(stack_t **head, unsigned int counter);
+void mstack(stack_t **head, unsigned int counter);
+void mpush(stack_t **head, unsigned int counter);
+void pallnode(stack_t **head, unsigned int counter);
 #endif

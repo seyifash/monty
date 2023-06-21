@@ -4,7 +4,7 @@
  * @head: the head ointer to the top of the stack
  * @line_num: the linenumber that contains the byte code
  */
-void addnode(stacK_t **head, unsigned int line_num)
+void addnode(stack_t **head, unsigned int line_num)
 {
 	stack_t *temp;
 	int sum = 0;
@@ -12,18 +12,17 @@ void addnode(stacK_t **head, unsigned int line_num)
 	if (*head == NULL || (*head)->next == NULL)
 	{
 	fprintf(stderr, "L%d: can't add, stack too short\n", line_num);
-	fclose(shared.fname);
-	free(shares.mcont);
-	free_stack(*head);
+	fclose(shared.file);
+	free(shared.mcont);
+	freestack(*head);
 	exit(EXIT_FAILURE);
 	}
 
-	sum = (*head)->n + (*head)->next->n;
 	temp = *head;
-	*head = (*head)->next;
-	(*head)->prev = NULL;
+	sum = temp->n + temp->next->n;
+	temp->next->n = sum;
+	*head  = temp->next;
 	free(temp);
-	(*head)->n = sum;
 }
 /**
   *donop- nothing
@@ -51,16 +50,15 @@ void subnode(stack_t **head, unsigned int line_num)
 	if (*head == NULL || (*head)->next == NULL)
 	{
 	fprintf(stderr, "L%u: can't sub, stack too short\n", line_num);
-	fclose(shared.fname);
+	fclose(shared.file);
 	free(shared.mcont);
-	free_stack(*head);
+	freestack(*head);
 	exit(EXIT_FAILURE);
 	}
 	temp = *head;
-	result = (*head)->next->n - (*head)->n;
-	(*head)->next->n = result;
-	*head = (*head)->next;
-	(*head)->prev = NULL;
+	result = temp->next->n - temp->n;
+	temp->next->n = result;
+	*head = temp->next;
 	free(temp);
 }
 /**
@@ -77,27 +75,28 @@ void divnode(stack_t **head, unsigned int line_num)
 	if (*head == NULL || (*head)->next == NULL)
 	{
 	fprintf(stderr, "L%u: can't div, stack too short\n", line_num);
-	fclose(shared.fname);
+	fclose(shared.file);
 	free(shared.mcont);
-	free_stack(*head);
+	freestack(*head);
 	exit(EXIT_FAILURE);
 	}
 
 	if ((*head)->n == 0)
 	{
 	fprintf(stderr, "L%u: division by zero\n", line_num);
-	fclose(shared.fname);
+	fclose(shared.file);
 	free(shared.mcont);
-	free_stack(*head);
+	freestack(*head);
 	exit(EXIT_FAILURE);
 	}
 
 	temp = *head;
-	result = (*head)->next->n / (*head)->n;
-	(*head)->next->n = result;
-	*head = (*head)->next;
-	(*head)->prev = NULL;
-	free(temp);
+        result = temp->next->n / temp->n;
+        temp->next->n = result;
+        *head = temp->next;
+        free(temp);
+
+	
 }
 /**
  * mulnode - divides the top two elements of the stack.
@@ -113,16 +112,16 @@ void mulnode(stack_t **head, unsigned int line_num)
 	if (*head == NULL || (*head)->next == NULL)
 	{
 	fprintf(stderr, "L%u: can't mul, stack too short\n", line_num);
-	fclose(shared.fname);
+	fclose(shared.file);
 	free(shared.mcont);
-	free_stack(*head);
+	freestack(*head);
 	exit(EXIT_FAILURE);
 	}
+
 	temp = *head;
-	result = (*head)->next->n * (*head)->n;
-	(*head)->next->n = result;
-	*head = (*head)->next;
-	(*head)->prev = NULL;
-	free(temp);
+        result = temp->next->n * temp->n;
+        temp->next->n = result;
+        *head = temp->next;
+        free(temp);
 }
 
