@@ -1,5 +1,6 @@
 #include "monty.h"
 #include <stdio.h>
+shared_vv shared;
 /**
  * main - monty code inteprter that executes the code
  * @argc: number of arguments
@@ -9,7 +10,7 @@
 int main(int argc, char *argv[])
 {
 	char *filecontent = NULL;
-	FILE *file;
+	FILE *file = NULL;
 	size_t n = 0;
 	stack_t *stack = NULL;
 	ssize_t lineread = 1;
