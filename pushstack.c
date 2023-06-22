@@ -24,7 +24,7 @@ return (1);
 */
 void mpush(stack_t **head, unsigned int counter)
 {
-int f = 0;
+int f = 0, n;
 if (shared.arg == NULL || !is_integer(shared.arg))
 {
 fprintf(stderr, "L%d: usage: push integer\n", counter);
@@ -33,7 +33,7 @@ exit(EXIT_FAILURE);
 }
 if (shared.arg[0] == '-')
 f++;
-int n = atoi(shared.arg + f);
+n = atoi(shared.arg + f);
 if (shared.tflag == 0)
 pushnode(head, n);
 else
