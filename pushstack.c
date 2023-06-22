@@ -33,7 +33,7 @@ exit(EXIT_FAILURE);
 }
 if (shared.arg[0] == '-')
 f++;
-n = atoi(shared.arg + f);
+n = atoi(shared.arg);
 if (shared.tflag == 0)
 pushnode(head, n);
 else
