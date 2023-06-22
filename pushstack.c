@@ -63,20 +63,3 @@ void mstack(stack_t **head, unsigned int counter)
 (void)counter;
 shared.tflag = 0;
 }
-/**
-* pallnode - prints the stack
-* @head: stack head
-* @counter: unused
-* Return: no return
-*/
-void pallnode(stack_t **head, unsigned int counter)
-{
-stack_t *curr;
-(void)counter;
-curr = *head;
-while (curr != NULL)
-{
-printf("%d\n", curr->n);
-curr = curr->next;
-}
-}
