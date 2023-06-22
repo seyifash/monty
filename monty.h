@@ -65,7 +65,6 @@ void pstrnode(stack_t **head, unsigned int line_num);
 void pcharnode(stack_t **head, unsigned int line_num);
 void modnode(stack_t **head, unsigned int line_num);
 void mulnode(stack_t **head, unsigned int line_num);
-void fileError(char *filename);
 void freestack(stack_t *head);
 void divnode(stack_t **head, unsigned int line_num);
 void subnode(stack_t **head, unsigned int line_num);
